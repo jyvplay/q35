@@ -1,0 +1,63 @@
+{
+  "agent": "Codex / Veritas V15 integration pass",
+  "timestamp_utc": "2026-07-02T00:00:00Z",
+  "scope": "UI regression repair, exact Gemini 9-model Test-and-Rotate roster, Elo review roster, advanced gate testbed, calibration efficiency upgrade",
+  "build_receipt": {
+    "tool": "build_project",
+    "status": "pass",
+    "modules_transformed": 194,
+    "dist_index_html_kb": 920.77,
+    "dist_index_html_gzip_kb": 290.79,
+    "worker_artifacts": [
+      "dist/graph.worker-nOFQ8bXe.js",
+      "dist/compute.worker-Ns9LxvWp.js"
+    ]
+  },
+  "ui_regression_checks": [
+    {
+      "check": "Original npm app styles available under Tailwind v4",
+      "evidence": "src/index.css imports Tailwind and explicitly registers @source \"../node_modules/veritas-universal-rigor-guard-v15/src\" so Tailwind scans the original repo UI classes that live in node_modules.",
+      "status": "pass"
+    },
+    {
+      "check": "Original Chat submit button not blocked by V15 controls",
+      "evidence": "V15Overlay is fixed bottom-left; original ChatApp input submit button is bottom-right. Bottom-left has no fixed/sticky original controls by source grep.",
+      "status": "pass"
+    },
+    {
+      "check": "Original app remains mounted verbatim",
+      "evidence": "src/App.tsx renders <OriginalApp /> from veritas-universal-rigor-guard-v15/src/App and only adds <V15Overlay /> outside it.",
+      "status": "pass"
+    }
+  ],
+  "exact_uploaded_gemini_roster": [
+    { "model": "gemini:gemini-3.5-flash", "api_model": "gemini-3.5-flash", "elo": 1478, "tier": "Frontier", "tie_break_authority": true },
+    { "model": "gemini:gemini-3-flash-preview", "api_model": "gemini-3-flash-preview", "elo": 1470, "tier": "Frontier" },
+    { "model": "gemini:gemini-3.1-flash-lite", "api_model": "gemini-3.1-flash-lite", "elo": 1465, "tier": "Frontier" },
+    { "model": "gemini:gemini-2.5-pro", "api_model": "gemini-2.5-pro", "elo": 1460, "tier": "Frontier" },
+    { "model": "gemini:gemma-4-31b-it", "api_model": "gemma-4-31b-it", "elo": 1449, "tier": "Strong" },
+    { "model": "gemini:gemma-4-26b-it", "api_model": "gemma-4-26b-it", "elo": 1430, "tier": "Strong" },
+    { "model": "gemini:gemini-2.5-flash", "api_model": "gemini-2.5-flash", "elo": 1420, "tier": "Strong" },
+    { "model": "gemini:gemini-2.5-flash-lite", "api_model": "gemini-2.5-flash-lite", "elo": 1395, "tier": "Strong" },
+    { "model": "gemini:gemma-3-27b-it", "api_model": "gemma-3-27b-it", "elo": 1338, "tier": "Capable" }
+  ],
+  "calibration_runtime_design": {
+    "old_path": "runBaselineOnQuestion: direct model generation + single baseline judge",
+    "v15_path": "runV15OnQuestion: rotated draft + flaw scan + deterministic auto-fix + optional advanced gates + iterative critique/editor repair + full 9-model parallel judge roster + Elo consensus",
+    "parallelization": "All questions in a round run concurrently. Within each question, baseline and V15 run concurrently because neither depends on the other.",
+    "fresh_contexts": "Every judge call includes an independent nonce and is a new generateContent request, ensuring fresh context windows each time.",
+    "advanced_gate_testbed": "OFF by default. When enabled, proposed regex gates are isolated in localStorage under veritas.v15.advancedGates.* and never mutate canonical gates."
+  },
+  "honest_live_llm_boundary": {
+    "live_api_key_available_in_workspace": false,
+    "reason": "The coding environment exposes build_project and file/search tools, not the user's browser localStorage Gemini key or a live app runtime.",
+    "live_execution_path": "Open the app, configure Gemini key in Chat -> Keys, click bottom-left V15 Calibrate -> Run Live Calibration. The dialog will execute real Gemini calls and show row-by-row answers, judge scores, Elo authority, and proposed testbed gates."
+  },
+  "sample_questions_loaded_in_code": [
+    "What does a p-value of 0.03 mean in a two-sample t-test comparing means? Include one common misinterpretation.",
+    "What is the legal statute of limitations for breach of written contract in California?",
+    "What is the Sharpe ratio and how is it computed? Give one caveat about its use.",
+    "Give a short TypeScript example that shows how to safely parse JSON from an untrusted API response. Explain the validation.",
+    "Calculate the compound interest on $10,000 at 5% annual rate over 3 years, compounded annually. Show the formula."
+  ]
+}

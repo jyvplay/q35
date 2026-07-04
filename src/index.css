@@ -1,0 +1,33 @@
+/**
+ * Local Tailwind entrypoint — REQUIRED FIX for Tailwind v4 automatic content
+ * detection, which excludes node_modules by default. Since the entire
+ * original app's UI (@/**) lives inside
+ * node_modules, Tailwind was never scanning those files for class names,
+ * causing the whole original app to render completely unstyled.
+ *
+ * The @source directive below is the ONLY functional addition versus the
+ * npm package's own index.css (reproduced verbatim below it) — it tells
+ * Tailwind v4 to also scan the package's source files for utility classes.
+ * See: https://tailwindcss.com/docs/detecting-classes-in-source-files#explicitly-registering-sources
+ */
+@import "tailwindcss";
+
+/* ── Verbatim copy of @/index.css ── */
+@layer base {
+  html {
+    color-scheme: light;
+  }
+  body {
+    @apply bg-zinc-50 text-zinc-900 antialiased;
+  }
+}
+
+/* Ensure no dark-on-dark text in any dialogue or popup */
+.text-zinc-900 { color: #18181b; }
+.text-zinc-800 { color: #27272a; }
+.bg-zinc-900 { background-color: #18181b; }
+.text-white { color: #ffffff; }
+
+/* Force chat bubbles to high contrast */
+.bg-zinc-900 .text-zinc-800 { color: #ffffff !important; }
+.bg-zinc-900 .text-zinc-400 { color: #a1a1aa !important; }

@@ -1,0 +1,38 @@
+{
+  "id": "org-policy",
+  "version": "1.0.0",
+  "description": "Example organization-specific policy pack loaded declaratively.",
+  "rules": [
+    {
+      "id": "org.internal-codename-leak",
+      "domain": "structural",
+      "severity": "major",
+      "code": "ORG_INTERNAL_CODENAME_LEAK",
+      "message": "Internal project codename leaked into external-facing content.",
+      "remediation": "Replace internal codenames (Project Bluebird, Operation Phoenix) with the approved public product name before publishing externally.",
+      "appliesWhenAny": ["external", "public", "blog", "press", "customer"],
+      "scanRegex": "\\b(Project Bluebird|Operation Phoenix|Skunkworks Alpha)\\b",
+      "scanFlags": "i"
+    },
+    {
+      "id": "org.secret-key-format",
+      "domain": "structural",
+      "severity": "critical",
+      "code": "ORG_SECRET_KEY_LEAK",
+      "message": "Live secret/API key pattern detected in output.",
+      "remediation": "Never emit live credentials. Replace with a placeholder like <YOUR_API_KEY> and rotate the leaked key immediately.",
+      "scanRegex": "\\b(sk-[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16}|ghp_[A-Za-z0-9]{36})\\b"
+    },
+    {
+      "id": "org.unapproved-vendor",
+      "domain": "domain",
+      "severity": "warning",
+      "code": "ORG_UNAPPROVED_VENDOR",
+      "message": "Recommends a vendor outside the approved procurement list.",
+      "remediation": "Recommend only vendors on the approved procurement allowlist, or flag the recommendation as requiring procurement review.",
+      "appliesWhenAny": ["vendor", "procurement", "purchase", "supplier"],
+      "scanRegex": "\\b(recommend|suggest|use|go with)\\b[\\s\\S]{0,60}\\b(UnapprovedCorp|ShadowVendor)\\b",
+      "scanFlags": "i"
+    }
+  ]
+}
